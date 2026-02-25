@@ -15,7 +15,7 @@ export interface ThemeOption {
 
 export const THEME_OPTIONS: ReadonlyArray<ThemeOption> = [
   { value: 'products', label: 'Productos' },
-  { value: 'movies', label: 'Peliculas/Series' },
+  { value: 'movies', label: 'Películas/Series' },
   { value: 'books', label: 'Libros' },
   { value: 'nintendoGames', label: 'Videojuegos Nintendo' },
   { value: 'veganRecipes', label: 'Recetas Veganas' },
@@ -53,7 +53,17 @@ export const NINTENDO_PLATFORMS: ReadonlyArray<NintendoPlatform> = [
 ];
 
 export const RECIPE_DIFFICULTIES: ReadonlyArray<RecipeDifficulty> = ['easy', 'medium', 'hard'];
+export const RECIPE_DIFFICULTY_LABELS: Readonly<Record<RecipeDifficulty, string>> = {
+  easy: 'Fácil',
+  medium: 'Media',
+  hard: 'Difícil',
+};
 export const PET_SPECIES_OPTIONS: ReadonlyArray<PetSpecies> = ['dog', 'cat', 'other'];
+export const PET_SPECIES_LABELS: Readonly<Record<PetSpecies, string>> = {
+  dog: 'Perro',
+  cat: 'Gato',
+  other: 'Otro',
+};
 
 export interface ProductItem {
   id: string;
@@ -272,13 +282,13 @@ const readNumberValue = (
 
   const parsedValue: number = Number(normalizedValue);
   if (!Number.isFinite(parsedValue) || Number.isNaN(parsedValue)) {
-    return { ok: false, error: `${label} debe ser un numero valido.` };
+    return { ok: false, error: `${label} debe ser un número válido.` };
   }
   if (parsedValue < min) {
     return { ok: false, error: `${label} debe ser mayor o igual a ${min}.` };
   }
   if (mustBeInteger && !Number.isInteger(parsedValue)) {
-    return { ok: false, error: `${label} debe ser un numero entero.` };
+    return { ok: false, error: `${label} debe ser un número entero.` };
   }
 
   return { ok: true, value: parsedValue };
@@ -472,26 +482,22 @@ export const itemToDraft = (item: AppItem): ItemDraft => {
 
 const buildError = (error: string): BuildItemResult => ({ ok: false, error });
 
+const collectValidationErrors = (results: ReadonlyArray<ValidationResult<unknown>>): string[] =>
+  results.flatMap((result: ValidationResult<unknown>): string[] =>
+    result.ok ? [] : [result.error],
+  );
+
 export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItemResult => {
   const id: string = itemId ?? createItemId();
 
   switch (draft.kind) {
     case 'products': {
       const name = readRequiredText(draft.name, 'El nombre');
-      if (!name.ok) {
-        return buildError(name.error);
-      }
-      const category = readRequiredText(draft.category, 'La categoria');
-      if (!category.ok) {
-        return buildError(category.error);
-      }
+      const category = readRequiredText(draft.category, 'La categoría');
       const brand = readRequiredText(draft.brand, 'La marca');
-      if (!brand.ok) {
-        return buildError(brand.error);
-      }
       const price = readNumberValue(draft.price, 'El precio', 0, false);
-      if (!price.ok) {
-        return buildError(price.error);
+      if (!name.ok || !category.ok || !brand.ok || !price.ok) {
+        return buildError(collectValidationErrors([name, category, brand, price]).join(' '));
       }
 
       return {
@@ -508,21 +514,12 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
       };
     }
     case 'movies': {
-      const title = readRequiredText(draft.title, 'El titulo');
-      if (!title.ok) {
-        return buildError(title.error);
-      }
-      const genre = readRequiredText(draft.genre, 'El genero');
-      if (!genre.ok) {
-        return buildError(genre.error);
-      }
+      const title = readRequiredText(draft.title, 'El título');
+      const genre = readRequiredText(draft.genre, 'El género');
       const director = readRequiredText(draft.director, 'El director');
-      if (!director.ok) {
-        return buildError(director.error);
-      }
-      const year = readNumberValue(draft.year, 'El anio', 1888, true);
-      if (!year.ok) {
-        return buildError(year.error);
+      const year = readNumberValue(draft.year, 'El año', 1888, true);
+      if (!title.ok || !genre.ok || !director.ok || !year.ok) {
+        return buildError(collectValidationErrors([title, genre, director, year]).join(' '));
       }
 
       return {
@@ -539,21 +536,12 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
       };
     }
     case 'books': {
-      const title = readRequiredText(draft.title, 'El titulo');
-      if (!title.ok) {
-        return buildError(title.error);
-      }
+      const title = readRequiredText(draft.title, 'El título');
       const author = readRequiredText(draft.author, 'El autor');
-      if (!author.ok) {
-        return buildError(author.error);
-      }
       const publisher = readRequiredText(draft.publisher, 'La editorial');
-      if (!publisher.ok) {
-        return buildError(publisher.error);
-      }
-      const pages = readNumberValue(draft.pages, 'Las paginas', 1, true);
-      if (!pages.ok) {
-        return buildError(pages.error);
+      const pages = readNumberValue(draft.pages, 'Las páginas', 1, true);
+      if (!title.ok || !author.ok || !publisher.ok || !pages.ok) {
+        return buildError(collectValidationErrors([title, author, publisher, pages]).join(' '));
       }
 
       return {
@@ -570,17 +558,11 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
       };
     }
     case 'nintendoGames': {
-      const title = readRequiredText(draft.title, 'El titulo');
-      if (!title.ok) {
-        return buildError(title.error);
-      }
-      const genre = readRequiredText(draft.genre, 'El genero');
-      if (!genre.ok) {
-        return buildError(genre.error);
-      }
+      const title = readRequiredText(draft.title, 'El título');
+      const genre = readRequiredText(draft.genre, 'El género');
       const price = readNumberValue(draft.price, 'El precio', 0, false);
-      if (!price.ok) {
-        return buildError(price.error);
+      if (!title.ok || !genre.ok || !price.ok) {
+        return buildError(collectValidationErrors([title, genre, price]).join(' '));
       }
 
       return {
@@ -598,16 +580,10 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
     }
     case 'veganRecipes': {
       const name = readRequiredText(draft.name, 'El nombre');
-      if (!name.ok) {
-        return buildError(name.error);
-      }
       const mainIngredient = readRequiredText(draft.mainIngredient, 'El ingrediente principal');
-      if (!mainIngredient.ok) {
-        return buildError(mainIngredient.error);
-      }
       const minutes = readNumberValue(draft.minutes, 'Los minutos', 1, true);
-      if (!minutes.ok) {
-        return buildError(minutes.error);
+      if (!name.ok || !mainIngredient.ok || !minutes.ok) {
+        return buildError(collectValidationErrors([name, mainIngredient, minutes]).join(' '));
       }
 
       return {
@@ -625,20 +601,11 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
     }
     case 'events': {
       const name = readRequiredText(draft.name, 'El nombre');
-      if (!name.ok) {
-        return buildError(name.error);
-      }
-      const location = readRequiredText(draft.location, 'La ubicacion');
-      if (!location.ok) {
-        return buildError(location.error);
-      }
+      const location = readRequiredText(draft.location, 'La ubicación');
       const organizer = readRequiredText(draft.organizer, 'El organizador');
-      if (!organizer.ok) {
-        return buildError(organizer.error);
-      }
       const date = readRequiredText(draft.date, 'La fecha');
-      if (!date.ok) {
-        return buildError(date.error);
+      if (!name.ok || !location.ok || !organizer.ok || !date.ok) {
+        return buildError(collectValidationErrors([name, location, organizer, date]).join(' '));
       }
 
       return {
@@ -656,20 +623,11 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
     }
     case 'trips': {
       const destination = readRequiredText(draft.destination, 'El destino');
-      if (!destination.ok) {
-        return buildError(destination.error);
-      }
-      const country = readRequiredText(draft.country, 'El pais');
-      if (!country.ok) {
-        return buildError(country.error);
-      }
+      const country = readRequiredText(draft.country, 'El país');
       const season = readRequiredText(draft.season, 'La temporada');
-      if (!season.ok) {
-        return buildError(season.error);
-      }
-      const days = readNumberValue(draft.days, 'Los dias', 1, true);
-      if (!days.ok) {
-        return buildError(days.error);
+      const days = readNumberValue(draft.days, 'Los días', 1, true);
+      if (!destination.ok || !country.ok || !season.ok || !days.ok) {
+        return buildError(collectValidationErrors([destination, country, season, days]).join(' '));
       }
 
       return {
@@ -687,16 +645,10 @@ export const buildItemFromDraft = (draft: ItemDraft, itemId?: string): BuildItem
     }
     case 'pets': {
       const name = readRequiredText(draft.name, 'El nombre');
-      if (!name.ok) {
-        return buildError(name.error);
-      }
       const breed = readRequiredText(draft.breed, 'La raza');
-      if (!breed.ok) {
-        return buildError(breed.error);
-      }
       const age = readNumberValue(draft.age, 'La edad', 0, true);
-      if (!age.ok) {
-        return buildError(age.error);
+      if (!name.ok || !breed.ok || !age.ok) {
+        return buildError(collectValidationErrors([name, breed, age]).join(' '));
       }
 
       return {

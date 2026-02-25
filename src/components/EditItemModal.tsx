@@ -3,7 +3,9 @@ import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
 import {
   NINTENDO_PLATFORMS,
   PET_SPECIES_OPTIONS,
+  PET_SPECIES_LABELS,
   RECIPE_DIFFICULTIES,
+  RECIPE_DIFFICULTY_LABELS,
   buildItemFromDraft,
   itemToDraft,
   updateDraftBooleanField,
@@ -34,7 +36,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
   }, [isOpen, itemToEdit]);
 
   const handleFieldChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ): void => {
     const { name, value } = event.currentTarget;
     setDraft((previous: ItemDraft | null): ItemDraft | null => {
@@ -92,7 +94,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-product-category">Categoria</label>
+            <label htmlFor="edit-product-category">Categoría</label>
             <input
               id="edit-product-category"
               name="category"
@@ -136,7 +138,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
       case 'movies':
         return (
           <>
-            <label htmlFor="edit-movie-title">Titulo</label>
+            <label htmlFor="edit-movie-title">Título</label>
             <input
               id="edit-movie-title"
               name="title"
@@ -145,7 +147,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-movie-genre">Genero</label>
+            <label htmlFor="edit-movie-genre">Género</label>
             <input
               id="edit-movie-genre"
               name="genre"
@@ -163,7 +165,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-movie-year">Anio</label>
+            <label htmlFor="edit-movie-year">Año</label>
             <input
               id="edit-movie-year"
               name="year"
@@ -189,7 +191,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
       case 'books':
         return (
           <>
-            <label htmlFor="edit-book-title">Titulo</label>
+            <label htmlFor="edit-book-title">Título</label>
             <input
               id="edit-book-title"
               name="title"
@@ -216,7 +218,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-book-pages">Paginas</label>
+            <label htmlFor="edit-book-pages">Páginas</label>
             <input
               id="edit-book-pages"
               name="pages"
@@ -242,7 +244,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
       case 'nintendoGames':
         return (
           <>
-            <label htmlFor="edit-nintendo-title">Titulo</label>
+            <label htmlFor="edit-nintendo-title">Título</label>
             <input
               id="edit-nintendo-title"
               name="title"
@@ -265,7 +267,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               ))}
             </select>
 
-            <label htmlFor="edit-nintendo-genre">Genero</label>
+            <label htmlFor="edit-nintendo-genre">Género</label>
             <input
               id="edit-nintendo-genre"
               name="genre"
@@ -318,7 +320,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
             >
               {RECIPE_DIFFICULTIES.map((difficulty: RecipeDifficulty) => (
                 <option key={difficulty} value={difficulty}>
-                  {difficulty}
+                  {RECIPE_DIFFICULTY_LABELS[difficulty]}
                 </option>
               ))}
             </select>
@@ -367,7 +369,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-event-location">Ubicacion</label>
+            <label htmlFor="edit-event-location">Ubicación</label>
             <input
               id="edit-event-location"
               name="location"
@@ -418,7 +420,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-trip-country">Pais</label>
+            <label htmlFor="edit-trip-country">País</label>
             <input
               id="edit-trip-country"
               name="country"
@@ -436,7 +438,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
               onChange={handleFieldChange}
             />
 
-            <label htmlFor="edit-trip-days">Dias</label>
+            <label htmlFor="edit-trip-days">Días</label>
             <input
               id="edit-trip-days"
               name="days"
@@ -480,7 +482,7 @@ function EditItemModal({ isOpen, itemToEdit, onSave, onClose }: EditItemModalPro
             >
               {PET_SPECIES_OPTIONS.map((species: PetSpecies) => (
                 <option key={species} value={species}>
-                  {species}
+                  {PET_SPECIES_LABELS[species]}
                 </option>
               ))}
             </select>

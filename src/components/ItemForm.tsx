@@ -3,7 +3,9 @@ import type { ChangeEvent, FormEvent } from 'react';
 import {
   NINTENDO_PLATFORMS,
   PET_SPECIES_OPTIONS,
+  PET_SPECIES_LABELS,
   RECIPE_DIFFICULTIES,
+  RECIPE_DIFFICULTY_LABELS,
   THEME_OPTIONS,
   buildItemFromDraft,
   createEmptyDraft,
@@ -42,7 +44,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
   }, [selectedTheme]);
 
   const handleFieldChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ): void => {
     const { name, value } = event.currentTarget;
     setDraft((previous: ItemDraft): ItemDraft => updateDraftTextField(previous, name, value));
@@ -82,10 +84,10 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               type="text"
               value={currentDraft.name}
               onChange={handleFieldChange}
-              placeholder="Ej: Alpargatas Clasicas"
+              placeholder="Ej: Alpargatas Clásicas"
             />
 
-            <label htmlFor="product-category">Categoria</label>
+            <label htmlFor="product-category">Categoría</label>
             <input
               id="product-category"
               name="category"
@@ -131,7 +133,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
       case 'movies':
         return (
           <>
-            <label htmlFor="movie-title">Titulo</label>
+            <label htmlFor="movie-title">Título</label>
             <input
               id="movie-title"
               name="title"
@@ -141,14 +143,14 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               placeholder="Ej: Interstellar"
             />
 
-            <label htmlFor="movie-genre">Genero</label>
+            <label htmlFor="movie-genre">Género</label>
             <input
               id="movie-genre"
               name="genre"
               type="text"
               value={currentDraft.genre}
               onChange={handleFieldChange}
-              placeholder="Ej: Ciencia ficcion"
+              placeholder="Ej: Ciencia ficción"
             />
 
             <label htmlFor="movie-director">Director</label>
@@ -161,7 +163,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               placeholder="Ej: Christopher Nolan"
             />
 
-            <label htmlFor="movie-year">Anio</label>
+            <label htmlFor="movie-year">Año</label>
             <input
               id="movie-year"
               name="year"
@@ -187,14 +189,14 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
       case 'books':
         return (
           <>
-            <label htmlFor="book-title">Titulo</label>
+            <label htmlFor="book-title">Título</label>
             <input
               id="book-title"
               name="title"
               type="text"
               value={currentDraft.title}
               onChange={handleFieldChange}
-              placeholder="Ej: Cien anios de soledad"
+              placeholder="Ej: Cien años de soledad"
             />
 
             <label htmlFor="book-author">Autor</label>
@@ -204,7 +206,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               type="text"
               value={currentDraft.author}
               onChange={handleFieldChange}
-              placeholder="Ej: Gabriel Garcia Marquez"
+              placeholder="Ej: Gabriel García Márquez"
             />
 
             <label htmlFor="book-publisher">Editorial</label>
@@ -217,7 +219,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               placeholder="Ej: Sudamericana"
             />
 
-            <label htmlFor="book-pages">Paginas</label>
+            <label htmlFor="book-pages">Páginas</label>
             <input
               id="book-pages"
               name="pages"
@@ -243,7 +245,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
       case 'nintendoGames':
         return (
           <>
-            <label htmlFor="nintendo-title">Titulo</label>
+            <label htmlFor="nintendo-title">Título</label>
             <input
               id="nintendo-title"
               name="title"
@@ -267,7 +269,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               ))}
             </select>
 
-            <label htmlFor="nintendo-genre">Genero</label>
+            <label htmlFor="nintendo-genre">Género</label>
             <input
               id="nintendo-genre"
               name="genre"
@@ -322,7 +324,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
             >
               {RECIPE_DIFFICULTIES.map((difficulty: RecipeDifficulty) => (
                 <option key={difficulty} value={difficulty}>
-                  {difficulty}
+                  {RECIPE_DIFFICULTY_LABELS[difficulty]}
                 </option>
               ))}
             </select>
@@ -370,10 +372,10 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               type="text"
               value={currentDraft.name}
               onChange={handleFieldChange}
-              placeholder="Ej: Feria de Innovacion"
+              placeholder="Ej: Feria de Innovación"
             />
 
-            <label htmlFor="event-location">Ubicacion</label>
+            <label htmlFor="event-location">Ubicación</label>
             <input
               id="event-location"
               name="location"
@@ -427,14 +429,14 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               placeholder="Ej: Kioto"
             />
 
-            <label htmlFor="trip-country">Pais</label>
+            <label htmlFor="trip-country">País</label>
             <input
               id="trip-country"
               name="country"
               type="text"
               value={currentDraft.country}
               onChange={handleFieldChange}
-              placeholder="Ej: Japon"
+              placeholder="Ej: Japón"
             />
 
             <label htmlFor="trip-season">Temporada</label>
@@ -447,7 +449,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
               placeholder="Ej: Primavera"
             />
 
-            <label htmlFor="trip-days">Dias</label>
+            <label htmlFor="trip-days">Días</label>
             <input
               id="trip-days"
               name="days"
@@ -492,7 +494,7 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
             >
               {PET_SPECIES_OPTIONS.map((species: PetSpecies) => (
                 <option key={species} value={species}>
-                  {species}
+                  {PET_SPECIES_LABELS[species]}
                 </option>
               ))}
             </select>
@@ -534,8 +536,8 @@ function ItemForm({ selectedTheme, onCreateItem }: ItemFormProps) {
   };
 
   return (
-    <section className="card">
-      <h2>Crear item: {getThemeLabel(selectedTheme)}</h2>
+    <section className="card form-card">
+      <h2>Crear ítem: {getThemeLabel(selectedTheme)}</h2>
       <form onSubmit={handleSubmit} className="form-grid">
         {renderFields(draft)}
         {errorMessage.length > 0 && (

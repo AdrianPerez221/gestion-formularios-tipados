@@ -8,9 +8,7 @@ interface ThemeSelectorProps {
 }
 
 function ThemeSelector({ selectedTheme, onThemeChange }: ThemeSelectorProps) {
-  const handleThemeChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ): void => {
+  const handleThemeChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     const nextTheme: string = event.currentTarget.value;
     if (isTheme(nextTheme)) {
       onThemeChange(nextTheme);
@@ -18,7 +16,7 @@ function ThemeSelector({ selectedTheme, onThemeChange }: ThemeSelectorProps) {
   };
 
   return (
-    <section className="card">
+    <section className="card selector-card">
       <h2>Tema</h2>
       <label htmlFor="theme-select">Selecciona el tipo de elementos a gestionar</label>
       <select id="theme-select" value={selectedTheme} onChange={handleThemeChange}>

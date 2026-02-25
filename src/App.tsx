@@ -68,16 +68,21 @@ function App() {
   return (
     <main className="app-shell">
       <header className="app-header card">
-        <h1>Gestion Multi-Tema de Formularios Tipados</h1>
+        <h1>Gestión Multi-Tema de Formularios Tipados</h1>
         <p>
-          Crear, listar, editar en modal y eliminar con TypeScript estricto y persistencia en
-          localStorage.
+          Administra elementos por tema: crea, filtra, edita en modal y elimina. Los datos se
+          guardan automáticamente en localStorage.
         </p>
       </header>
 
       <ThemeSelector selectedTheme={appState.theme} onThemeChange={handleThemeChange} />
       <ItemForm selectedTheme={appState.theme} onCreateItem={handleCreateItem} />
-      <ItemList items={visibleItems} onEditItem={handleStartEdit} onDeleteItem={handleDeleteItem} />
+      <ItemList
+        items={visibleItems}
+        selectedTheme={appState.theme}
+        onEditItem={handleStartEdit}
+        onDeleteItem={handleDeleteItem}
+      />
 
       <EditItemModal
         isOpen={editingItem !== null}
